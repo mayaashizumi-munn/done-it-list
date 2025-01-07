@@ -1,7 +1,7 @@
 <template>
     <div>
         Done It App
-        <button @click="openDoneItModal">Create new Done It</button>
+        <Button @click="openDoneItModal">Create new Done It</Button>
 
         <NewDoneItModal v-if="modalOpen" />
     </div>
@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import { Button } from "primevue"
 import NewDoneItModal from "./components/NewDoneItModal.vue";
 
 const modalOpen = ref(false)
