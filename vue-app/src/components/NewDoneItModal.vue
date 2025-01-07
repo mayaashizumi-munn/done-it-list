@@ -14,7 +14,6 @@
                     showTime
                     hourFormat="12"
                     fluid
-                    showIcon
                 />
             </FloatLabel>
 
@@ -26,7 +25,6 @@
                     showTime
                     hourFormat="12"
                     fluid
-                    showIcon
                 />
             </FloatLabel>
         </div>
@@ -47,7 +45,7 @@ const emit = defineEmits(['close'])
 
 const description = ref('')
 const startTime = ref()
-const endTime = ref()
+const endTime = ref('-')
 
 const createDoneIt = () => {
     emit('close')
