@@ -1,9 +1,13 @@
 <template>
     <div>
         Done It App
+        <br />
         <Button @click="openDoneItModal">Create new Done It</Button>
 
-        <NewDoneItModal v-if="modalOpen" />
+        <NewDoneItModal
+            v-model:visible="modalVisible"
+            @close="closeDoneItModal"
+        />
     </div>
 </template>
 
@@ -12,10 +16,13 @@ import { ref } from "vue"
 import { Button } from "primevue"
 import NewDoneItModal from "./components/NewDoneItModal.vue";
 
-const modalOpen = ref(false)
+const modalVisible = ref(false)
 
 const openDoneItModal = () => {
-    modalOpen.value = true
+    modalVisible.value = true
+}
+const closeDoneItModal = () => {
+    modalVisible.value = false
 }
 </script>
 
