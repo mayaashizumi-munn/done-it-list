@@ -16,11 +16,7 @@ async function setupDB(storeName: string): Promise<IDBPDatabase<unknown>> {
     })
 }
 
-export async function addToDb(storeName: string, data: any) {
+export async function addToDb(storeName: string, data: any): Promise<IDBValidKey> {
     const db = await setupDB(storeName)
-
-    const id = await db.add(storeName, data).catch((err) => {
-        console.log('Error', err)
-    })
-    return id
+    return db.add(storeName, data)
 }

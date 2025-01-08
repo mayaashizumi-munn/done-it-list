@@ -90,7 +90,7 @@ import CategoryPill from './CategoryPill.vue'
 import { addToDb } from '../idb'
 
 const visible = defineModel()
-const emit = defineEmits(['close'])
+const emit = defineEmits(['submitted', 'errorSubmitting'])
 
 interface Category {
     label: string
@@ -142,9 +142,11 @@ const createDoneIt = async (formState: FormSubmitEvent) => {
             'startTime': startTime.value,
             'endTime': endTime.value,
             'category': category.value.type,
+        }).then(() => {
+            emit('submitted')
+        }).catch(() => {
+            emit('errorSubmitting')
         })
-
-        emit('close')
     }
 }
 </script>
