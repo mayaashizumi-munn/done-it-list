@@ -5,6 +5,7 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import { definePreset } from '@primevue/themes';
+import ToastService from 'primevue/toastservice';
 
 const DoneItPreset = definePreset(Aura, {
     semantic: {
@@ -24,12 +25,12 @@ const DoneItPreset = definePreset(Aura, {
     }
 });
 
-
 const app = createApp(App);
 app.use(PrimeVue, {
     theme: {
         preset: DoneItPreset
     }
 });
+app.use(ToastService);
 
 app.mount('#app')
