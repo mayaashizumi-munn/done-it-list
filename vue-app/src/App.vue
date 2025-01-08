@@ -1,8 +1,11 @@
 <template>
     <div>
-        Done It App
-        <br />
-        <Button @click="openDoneItModal">Create new Done It</Button>
+        <header class="done-it-header">
+            <h1>Done It ✅</h1>
+            <Button @click="openDoneItModal">+ Done It</Button>
+        </header>
+
+        <DoneItList />
 
         <NewDoneItModal
             v-model:visible="modalVisible"
@@ -20,6 +23,7 @@ import { Button } from "primevue"
 import NewDoneItModal from "./components/NewDoneItModal.vue";
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import DoneItList from "./components/DoneItList.vue";
 
 const toast = useToast();
 
@@ -38,5 +42,9 @@ const onDoneItSubmitFailed = () => {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+.done-it-header {
+    display: flex;
+    justify-content: space-between;
+}
 </style>

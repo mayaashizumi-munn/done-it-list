@@ -20,3 +20,8 @@ export async function addToDb(storeName: string, data: any): Promise<IDBValidKey
     const db = await setupDB(storeName)
     return db.add(storeName, data)
 }
+
+export async function getAllFromDb(storeName: string): Promise<any[]> {
+    const db = await setupDB(storeName)
+    return db.getAll(storeName)
+}
