@@ -87,6 +87,7 @@ import {
 } from "primevue"
 import { Form, type FormSubmitEvent, type FormResolverOptions } from '@primevue/forms'
 import CategoryPill from './CategoryPill.vue'
+import { addToDb } from '../idb'
 
 const visible = defineModel()
 const emit = defineEmits(['close'])
@@ -133,9 +134,16 @@ const resolver = (resolverOptions: FormResolverOptions) => {
     }
 }
 
-const createDoneIt = (formState: FormSubmitEvent) => {
-    console.log(formState.valid)
+const createDoneIt = async (formState: FormSubmitEvent) => {
     if (formState.valid) {
+        await addToDb('doneit', {
+            'title': title.value,
+            'description': description.value,
+            'startTime': startTime.value,
+            'endTime': endTime.value,
+            'category': category.value.type,
+        })
+
         emit('close')
     }
 }
