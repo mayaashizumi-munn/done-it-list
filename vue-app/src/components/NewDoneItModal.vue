@@ -47,9 +47,19 @@
                     v-model="category" 
                     :options="categories" 
                     input-id="cat-select" 
-                    option-label="name" 
                     class="float-label__select-input" 
-                />
+                >
+                    <template #option="slotProps">
+                        <CategoryPill :label="slotProps.option.label" :type="slotProps.option.type" />
+                    </template>
+                    <template #value="slotProps">
+                        <CategoryPill 
+                            v-if="slotProps.value" 
+                            :label="slotProps.value.label" 
+                            :type="slotProps.value.type" 
+                        />
+                    </template>
+                </Select>
                 <label for="cat-select">Category *</label>
             </FloatLabel>
             <Message v-if="$form.catSelect?.invalid" severity="error" size="small" variant="simple">
@@ -76,20 +86,21 @@ import {
     Textarea
 } from "primevue"
 import { Form, type FormSubmitEvent, type FormResolverOptions } from '@primevue/forms'
+import CategoryPill from './CategoryPill.vue'
 
 const visible = defineModel()
 const emit = defineEmits(['close'])
 
 interface Category {
-    name: string
-    color: string
+    label: string
+    type: string
 }
 const categories: Category[] = [
-    { name: 'Sprint ticket', color: '#3446eb' },
-    { name: 'PR', color: '#7b7c85' },
-    { name: 'Meeting', color: '#4cc271' },
-    { name: 'Infrastructure', color: '#944cc2' },
-    { name: 'Initiative', color: '#c24cba' },
+    { label: 'Sprint ticket', type: 'sprint-ticket' },
+    { label: 'PR', type: 'pr' },
+    { label: 'Meeting', type: 'meeting' },
+    { label: 'Infrastructure', type: 'infrastructure' },
+    { label: 'Initiative', type: 'initiative' },
 ]
 
 const title = ref('')
@@ -155,4 +166,6 @@ const createDoneIt = (formState: FormSubmitEvent) => {
     display: flex;
     gap: @gutter;
 }
+
+
 </style>
