@@ -1,11 +1,10 @@
 <template>
-    <div>
         <header class="done-it-header">
             <h1>Done It ✅</h1>
             <Button @click="openDoneItModal">+ Done It</Button>
         </header>
 
-        <DoneItList />
+        <DoneItList :loading="loadingDoneIts" :done-its="doneIts" />
 
         <NewDoneItModal
             v-model:visible="modalVisible"
@@ -14,25 +13,39 @@
         />
 
         <Toast />
-    </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, type Ref, onBeforeMount } from "vue"
 import { Button } from "primevue"
 import NewDoneItModal from "./components/NewDoneItModal.vue";
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import DoneItList from "./components/DoneItList.vue";
+import { getAllFromDb } from "./idb";
+import type { DoneIt } from "./types";
 
 const toast = useToast();
 
 const modalVisible = ref(false)
+const loadingDoneIts = ref(true)
+const doneIts: Ref<DoneIt[]> = ref([])
+
+onBeforeMount(async () => {
+    await loadDoneItsFromDb()
+})
+
+const loadDoneItsFromDb = async () => {
+    loadingDoneIts.value = true
+    doneIts.value = await getAllFromDb('doneit')
+    loadingDoneIts.value = false
+}
 
 const openDoneItModal = () => {
     modalVisible.value = true
 }
-const onDoneItSubmit = () => {
+const onDoneItSubmit = async () => {
+    await loadDoneItsFromDb()
     modalVisible.value = false
     toast.add({severity: "success", summary: "Done It Added", detail: 'New done it created', life: 3000})
 }
