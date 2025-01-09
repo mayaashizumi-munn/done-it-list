@@ -141,7 +141,8 @@ const createDoneIt = async (formState: FormSubmitEvent) => {
             'description': description.value,
             'startTime': startTime.value,
             'endTime': endTime.value,
-            'category': category.value.type,
+            'categoryType': category.value.type,
+            'categoryLabel': category.value.label,
         }).then(() => {
             emit('submitted')
         }).catch(() => {
