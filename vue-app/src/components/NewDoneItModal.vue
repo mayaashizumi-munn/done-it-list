@@ -1,5 +1,5 @@
 <template>
-    <Dialog v-model:visible="visible" modal header="Create new Done It" id="done-it-modal">
+    <Dialog v-model="visible" modal header="Create new Done It" id="done-it-modal">
         <Form v-slot="$form" @submit="createDoneIt" :resolver="resolver" :validate-on-submit="true">
             <FloatLabel variant="on" class="float-label">
                 <InputText name="title" class="float-label__text-input" v-model="title" autocomplete="off" />
@@ -107,6 +107,7 @@ const categories: Category[] = [
     { label: 'Meeting', type: 'meeting' },
     { label: 'Infrastructure', type: 'infrastructure' },
     { label: 'Initiative', type: 'initiative' },
+    { label: 'Huddle', type: 'huddle' },
 ]
 
 const title = ref('')
