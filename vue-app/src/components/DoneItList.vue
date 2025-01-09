@@ -95,7 +95,7 @@ const getFormattedTime = (date: Date) => {
 
 .done-it-item-section {
     &__time {
-        width: 80px;
+        width: 85px;
     }
 
     &__category {
