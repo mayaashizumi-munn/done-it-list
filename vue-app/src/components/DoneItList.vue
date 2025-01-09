@@ -59,7 +59,8 @@ const organisedByDate: ComputedRef<DoneItDate[]> = computed(() => {
         return result
     }, [])
 
-    return dates.sort((a, b) => a.time.getTime() - b.time.getTime())
+    // Sort dates by descending
+    return dates.sort((a, b) => b.time.getTime() - a.time.getTime())
 })
 
 const getFormattedTime = (date: Date) => {
