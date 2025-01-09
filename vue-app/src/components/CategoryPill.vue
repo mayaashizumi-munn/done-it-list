@@ -47,5 +47,10 @@ const props = defineProps<Props>()
         background: rgba(#c24cba, 0.3);
         border: 1px solid #c24cba;
     }
+
+    &__huddle {
+        background: rgba(#c27d4c, 0.3);
+        border: 1px solid #c27d4c;
+    }
 }
 </style>
