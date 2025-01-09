@@ -20,6 +20,7 @@ const props = defineProps<Props>()
     border-radius: 20px;
     padding: 2px 8px;
     width: fit-content;
+    height: fit-content;
     color: white;
 
     &__sprint-ticket {
