@@ -11,7 +11,6 @@ async function setupDB(storeName: string): Promise<IDBPDatabase<unknown>> {
             if (!db.objectStoreNames.contains(storeName)) {
                 db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
             }
-            console.log(db.objectStoreNames)
         }
     })
 }
