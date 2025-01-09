@@ -145,10 +145,19 @@ const createDoneIt = async (formState: FormSubmitEvent) => {
             'categoryLabel': category.value.label,
         }).then(() => {
             emit('submitted')
+            resetForm()
         }).catch(() => {
             emit('errorSubmitting')
         })
     }
+}
+
+const resetForm = () => {
+    title.value = ''
+    description.value = ''
+    startTime.value = undefined
+    endTime.value = undefined
+    category.value = undefined
 }
 </script>
 

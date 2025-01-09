@@ -1,7 +1,12 @@
 <template>
         <header class="done-it-header">
             <h1>Done It ✅</h1>
-            <Button @click="openDoneItModal">+ Done It</Button>
+            <Button
+                id="add-done-it-button"
+                @click="openDoneItModal" 
+            >
+                + Done It
+            </Button>
         </header>
 
         <DoneItList :loading="loadingDoneIts" :done-its="doneIts" />
@@ -59,5 +64,10 @@ const onDoneItSubmitFailed = () => {
 .done-it-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+#add-done-it-button {
+    height: 60px;
 }
 </style>
