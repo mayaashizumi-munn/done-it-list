@@ -40,7 +40,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const organisedByDate: ComputedRef<DoneItDate[]> = computed(() => {
-    return props.doneIts?.reduce((result: DoneItDate[], item) => {
+    const dates = props.doneIts?.reduce((result: DoneItDate[], item) => {
         const date = item.startTime?.toDateString()
         const existingGroup = result.find(group => group.date === date)
 
@@ -48,11 +48,13 @@ const organisedByDate: ComputedRef<DoneItDate[]> = computed(() => {
             existingGroup.doneIts.push(item)
             existingGroup.doneIts.sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
         } else {
-            result.push({ date, doneIts: [item] })
+            result.push({ date, time: item.startTime, doneIts: [item] })
         }
 
         return result
     }, [])
+
+    return dates.sort((a, b) => a.time.getTime() - b.time.getTime())
 })
 
 const getFormattedTime = (date: Date) => {
@@ -71,6 +73,7 @@ const getFormattedTime = (date: Date) => {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding-bottom: 32px;
 }
 
 .done-it-item {
@@ -81,6 +84,7 @@ const getFormattedTime = (date: Date) => {
     display: flex;
     gap: 20px;
     width: 100%;
+    align-items: center;
 }
 
 .done-it-item-section {
@@ -95,10 +99,6 @@ const getFormattedTime = (date: Date) => {
     }
 
     &__summary {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
         p {
             margin: 0;
         }

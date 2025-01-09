@@ -10,5 +10,6 @@ export interface DoneIt {
 
 export interface DoneItDate {
     date: string
+    time: Date
     doneIts: DoneIt[]
 }
