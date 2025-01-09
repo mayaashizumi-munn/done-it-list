@@ -2,7 +2,7 @@
     <Dialog v-model:visible="visible" modal header="Create new Done It" id="done-it-modal">
         <Form v-slot="$form" @submit="createDoneIt" :resolver="resolver" :validate-on-submit="true">
             <FloatLabel variant="on" class="float-label">
-                <InputText name="title" class="float-label__text-input" v-model="title" />
+                <InputText name="title" class="float-label__text-input" v-model="title" autocomplete="off" />
                 <label for="title">Title *</label>
             </FloatLabel>
             <Message v-if="$form.title?.invalid" severity="error" size="small" variant="simple">
@@ -66,6 +66,11 @@
                 {{ $form.catSelect.error?.message }}
             </Message>
 
+            <FloatLabel variant="on" class="float-label">
+                <InputText name="link" class="float-label__text-input" v-model="link" />
+                <label for="link">Link</label>
+            </FloatLabel>
+
             <Button type="submit" severity="success" id="create-button">
                 Create
             </Button>
@@ -109,6 +114,7 @@ const description = ref('')
 const startTime = ref()
 const endTime = ref()
 const category = ref()
+const link = ref('')
 
 const resolver = (resolverOptions: FormResolverOptions) => {
     let errors = {
@@ -143,10 +149,12 @@ const createDoneIt = async (formState: FormSubmitEvent) => {
             'endTime': endTime.value,
             'categoryType': category.value.type,
             'categoryLabel': category.value.label,
+            'link': link.value
         }).then(() => {
             emit('submitted')
             resetForm()
-        }).catch(() => {
+        }).catch((e) => {
+            console.log(e)
             emit('errorSubmitting')
         })
     }
@@ -158,6 +166,7 @@ const resetForm = () => {
     startTime.value = undefined
     endTime.value = undefined
     category.value = undefined
+    link.value = ''
 }
 </script>
 

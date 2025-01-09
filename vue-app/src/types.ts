@@ -6,6 +6,7 @@ export interface DoneIt {
     endTime?: Date
     categoryType: string
     categoryLabel: string
+    link?: string
 }
 
 export interface DoneItDate {

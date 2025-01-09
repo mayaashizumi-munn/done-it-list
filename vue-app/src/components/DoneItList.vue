@@ -22,6 +22,11 @@
                     <p v-if="doneIt.description" class="done-it-item-section__summary__desc">
                         {{ doneIt.description }}
                     </p>
+                    <p v-if="doneIt.link" class="done-it-item-section__summary__link">
+                        <a :href="doneIt.link">
+                            {{ doneIt.link }}
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -107,8 +112,8 @@ const getFormattedTime = (date: Date) => {
             font-size: 20px;
         }
 
-        &__desc {
-            font-size: 14px;
+        &__desc, &__link {
+            font-size: 12px;
         }
     }
 }
