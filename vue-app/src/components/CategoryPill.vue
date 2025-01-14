@@ -52,5 +52,10 @@ const props = defineProps<Props>()
         background: rgba(#c27d4c, 0.3);
         border: 1px solid #c27d4c;
     }
+
+    &__on-leave {
+        background: rgba(#4cc2ac, 0.3);
+        border: 1px solid #4cc2ac;
+    }
 }
 </style>

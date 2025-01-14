@@ -108,6 +108,7 @@ const categories: Category[] = [
     { label: 'Infrastructure', type: 'infrastructure' },
     { label: 'Initiative', type: 'initiative' },
     { label: 'Huddle', type: 'huddle' },
+    { label: 'On leave', type: 'on-leave' },
 ]
 
 const title = ref('')
