@@ -41,6 +41,9 @@
             <Message v-if="$form.startTime?.invalid" severity="error" size="small" variant="simple">
                 {{ $form.startTime.error?.message }}
             </Message>
+            <Message v-if="$form.endTime?.invalid" severity="error" size="small" variant="simple">
+                {{ $form.endTime.error?.message }}
+            </Message>
 
             <FloatLabel variant="on" class="float-label">
                 <Select
@@ -123,6 +126,7 @@ const resolver = (resolverOptions: FormResolverOptions) => {
     let errors = {
         title: [],
         startTime: [],
+        endTime: [],
         catSelect: []
     }
 
@@ -136,6 +140,12 @@ const resolver = (resolverOptions: FormResolverOptions) => {
 
     if (!resolverOptions.values.catSelect) {
         errors.catSelect = [{ message: 'Category is required' }]
+    }
+
+    if (resolverOptions.values.endTime) {
+        if (resolverOptions.values.endTime < resolverOptions.values.startTime) {
+            errors.endTime = [{ message: 'End time must be in the future from start time' }]
+        }
     }
 
     return {
