@@ -33,6 +33,7 @@
                         showTime
                         hourFormat="12"
                         fluid
+                        @show="setToStartTime"
                     />
                     <label for="endTime">End Time</label>
                 </FloatLabel>
@@ -169,6 +170,13 @@ const resetForm = () => {
     endTime.value = undefined
     category.value = undefined
     link.value = ''
+}
+
+// For better usability, set end time to start time if its already set
+const setToStartTime = () => {
+    if (startTime.value) {
+        endTime.value = startTime.value
+    }
 }
 </script>
 
