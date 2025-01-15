@@ -14,3 +14,8 @@ export interface DoneItDate {
     time: Date
     doneIts: DoneIt[]
 }
+
+export interface ToDo {
+    id: number
+    title: string
+}
