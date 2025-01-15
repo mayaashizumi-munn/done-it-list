@@ -19,6 +19,7 @@ import type { DoneIt, DoneItDate } from '../types'
 import DoneItListItem from './DoneItListItem.vue'
 import { useToast } from 'primevue/usetoast'
 import { deleteFromDb } from '../idb'
+import { DONE_IT_DB } from '../constants'
 
 const toast = useToast()
 
@@ -50,7 +51,7 @@ const organisedByDate: ComputedRef<DoneItDate[]> = computed(() => {
 })
 
 const deleteDoneIt = (doneItId: number) => {
-    deleteFromDb('doneit', doneItId).then(() => {
+    deleteFromDb(DONE_IT_DB, doneItId).then(() => {
         toast.add({severity: "success", summary: "Deleted Done It", detail: 'Successfully deleted Done It', life: 3000})
         emit('refreshDoneIts')
     }).catch(() => {

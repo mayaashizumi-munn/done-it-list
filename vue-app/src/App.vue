@@ -10,6 +10,10 @@
             />
         </header>
 
+        <ToDoList />
+
+        <hr />
+
         <DoneItList 
             :loading="loadingDoneIts" 
             :done-its="doneIts" 
@@ -40,6 +44,8 @@ import DoneItList from "./components/DoneItList.vue";
 import { getAllFromDb } from "./idb";
 import type { DoneIt } from "./types";
 import ConfirmPopup from "primevue/confirmpopup";
+import ToDoList from "./components/ToDoList.vue";
+import { DONE_IT_DB } from "./constants";
 
 const toast = useToast();
 
@@ -53,7 +59,7 @@ onBeforeMount(async () => {
 
 const loadDoneItsFromDb = async () => {
     loadingDoneIts.value = true
-    doneIts.value = await getAllFromDb('doneit')
+    doneIts.value = await getAllFromDb(DONE_IT_DB)
     loadingDoneIts.value = false
 }
 
