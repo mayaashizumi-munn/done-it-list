@@ -3,10 +3,11 @@
             <h1>Done It ✅</h1>
             <Button
                 id="add-done-it-button"
+                icon="pi pi-list-check"
+                label="New Done It"
+                raised
                 @click="openDoneItModal" 
-            >
-                + Done It
-            </Button>
+            />
         </header>
 
         <DoneItList 
@@ -31,7 +32,7 @@
 
 <script setup lang="ts">
 import { ref, type Ref, onBeforeMount } from "vue"
-import { Button } from "primevue"
+import Button from "primevue/button"
 import NewDoneItModal from "./components/NewDoneItModal.vue";
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
@@ -75,9 +76,5 @@ const onDoneItSubmitFailed = () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-#add-done-it-button {
-    height: 60px;
 }
 </style>
