@@ -7,6 +7,7 @@
                 v-for="doneIt in date.doneIts" 
                 :key="doneIt.id"
                 :done-it="doneIt"
+                @delete="deleteDoneIt"
             />
         </div>
     </div>
@@ -16,12 +17,18 @@
 import { computed, type ComputedRef } from 'vue'
 import type { DoneIt, DoneItDate } from '../types'
 import DoneItListItem from './DoneItListItem.vue'
+import { useToast } from 'primevue/usetoast'
+import { deleteFromDb } from '../idb'
+
+const toast = useToast()
 
 interface Props {
     loading: boolean
     doneIts: DoneIt[]
 }
 const props = defineProps<Props>()
+
+const emit = defineEmits(['refreshDoneIts'])
 
 const organisedByDate: ComputedRef<DoneItDate[]> = computed(() => {
     const dates = props.doneIts?.reduce((result: DoneItDate[], item) => {
@@ -41,6 +48,16 @@ const organisedByDate: ComputedRef<DoneItDate[]> = computed(() => {
     // Sort dates by descending
     return dates.sort((a, b) => b.time.getTime() - a.time.getTime())
 })
+
+const deleteDoneIt = (doneItId: number) => {
+    deleteFromDb('doneit', doneItId).then(() => {
+        toast.add({severity: "success", summary: "Deleted Done It", detail: 'Successfully deleted Done It', life: 3000})
+        emit('refreshDoneIts')
+    }).catch(() => {
+        toast.add({severity: "error", summary: "Failed", detail: 'Failed to deleted Done It', life: 3000})
+    })
+    
+}
 </script>
 
 <style lang="less" scoped>

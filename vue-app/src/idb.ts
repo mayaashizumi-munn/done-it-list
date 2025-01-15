@@ -24,3 +24,8 @@ export async function getAllFromDb(storeName: string): Promise<any[]> {
     const db = await setupDB(storeName)
     return db.getAll(storeName)
 }
+
+export async function deleteFromDb(storeName: string, id: number): Promise<void> {
+    const db = await setupDB(storeName)
+    return db.delete(storeName, id)
+}

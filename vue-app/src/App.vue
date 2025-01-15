@@ -9,7 +9,11 @@
             </Button>
         </header>
 
-        <DoneItList :loading="loadingDoneIts" :done-its="doneIts" />
+        <DoneItList 
+            :loading="loadingDoneIts" 
+            :done-its="doneIts" 
+            @refresh-done-its="loadDoneItsFromDb"
+        />
 
         <NewDoneItModal
             v-model:visible="modalVisible"
@@ -18,6 +22,7 @@
         />
 
         <Toast />
+        <ConfirmPopup />
 
         <footer>
             Made with <i class="pi pi-heart" style="font-size: 10px" /> by Maya
@@ -33,6 +38,7 @@ import { useToast } from 'primevue/usetoast';
 import DoneItList from "./components/DoneItList.vue";
 import { getAllFromDb } from "./idb";
 import type { DoneIt } from "./types";
+import ConfirmPopup from "primevue/confirmpopup";
 
 const toast = useToast();
 

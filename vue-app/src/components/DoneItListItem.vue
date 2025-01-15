@@ -31,8 +31,22 @@
 
         <Transition>
             <div v-if="showActions" class="done-it-item-section__actions">
-                <Button icon="pi pi-trash" variant="text" rounded raised aria-label="Delete" />
-                <Button icon="pi pi-pen-to-square" variant="text" rounded raised aria-label="Edit" />
+                <Button 
+                    icon="pi pi-trash" 
+                    variant="text" 
+                    rounded 
+                    raised 
+                    aria-label="Delete"
+                    @click="onDeleteClicked"
+                />
+                <Button 
+                    icon="pi pi-pen-to-square" 
+                    variant="text" 
+                    rounded 
+                    raised 
+                    aria-label="Edit" 
+                    @click="onEditClicked"
+                />
             </div>
         </Transition>
     </div>
@@ -43,6 +57,9 @@ import { ref } from 'vue'
 import type { DoneIt } from '../types'
 import { Button } from 'primevue'
 import CategoryPill from './CategoryPill.vue'
+import { useConfirm } from "primevue/useconfirm";
+
+const confirm = useConfirm();
 
 const showActions = ref(false)
 
@@ -51,8 +68,34 @@ interface Props {
 }
 const props = defineProps<Props>()
 
+const emit = defineEmits(['delete'])
+
 const getFormattedTime = (date: Date) => {
     return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+}
+
+const onDeleteClicked = (event: Event) => {
+    confirm.require({
+        target: event.currentTarget,
+        message: 'Are you sure you want to delete this item?',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Cancel',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Delete',
+            severity: 'danger',
+        },
+        accept: () => {
+            emit('delete', props.doneIt.id)
+        },
+    });
+}
+
+const onEditClicked = (event) => {
+    
 }
 </script>
 
