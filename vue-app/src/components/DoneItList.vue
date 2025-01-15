@@ -3,32 +3,11 @@
         <div class="done-it-date" v-for="date in organisedByDate" :key="date.date">
             <h4>{{ date.date }}</h4>
 
-            <div class="done-it-item" v-for="doneIt in date.doneIts">
-                <span class="done-it-item-section__time">
-                    {{ getFormattedTime(doneIt.startTime) }}
-                    <span v-if="doneIt.endTime">
-                        - {{ getFormattedTime(doneIt.endTime) }}
-                    </span>
-                </span>
-                
-                <span class="done-it-item-section__category">
-                    <CategoryPill :type="doneIt.categoryType" :label="doneIt.categoryLabel" />
-                </span>
-
-                <div class="done-it-item-section__summary">
-                    <p class="done-it-item-section__summary__title">
-                        {{ doneIt.title }}
-                    </p>
-                    <p v-if="doneIt.description" class="done-it-item-section__summary__desc">
-                        {{ doneIt.description }}
-                    </p>
-                    <p v-if="doneIt.link" class="done-it-item-section__summary__link">
-                        <a :href="doneIt.link">
-                            {{ doneIt.link }}
-                        </a>
-                    </p>
-                </div>
-            </div>
+            <DoneItListItem 
+                v-for="doneIt in date.doneIts" 
+                :key="doneIt.id"
+                :done-it="doneIt"
+            />
         </div>
     </div>
 </template>
@@ -36,7 +15,7 @@
 <script lang="ts" setup>
 import { computed, type ComputedRef } from 'vue'
 import type { DoneIt, DoneItDate } from '../types'
-import CategoryPill from './CategoryPill.vue'
+import DoneItListItem from './DoneItListItem.vue'
 
 interface Props {
     loading: boolean
@@ -62,10 +41,6 @@ const organisedByDate: ComputedRef<DoneItDate[]> = computed(() => {
     // Sort dates by descending
     return dates.sort((a, b) => b.time.getTime() - a.time.getTime())
 })
-
-const getFormattedTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-}
 </script>
 
 <style lang="less" scoped>
@@ -81,42 +56,4 @@ const getFormattedTime = (date: Date) => {
     gap: 12px;
     padding-bottom: 32px;
 }
-
-.done-it-item {
-    border: 1px solid black;
-    border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
-    padding: 12px 16px;
-    display: flex;
-    gap: 20px;
-    width: 100%;
-    align-items: center;
-}
-
-.done-it-item-section {
-    &__time {
-        width: 85px;
-    }
-
-    &__category {
-        display: flex;
-        align-items: center;
-        width: 120px;
-    }
-
-    &__summary {
-        p {
-            margin: 0;
-        }
-
-        &__title {
-            font-size: 20px;
-        }
-
-        &__desc, &__link {
-            font-size: 12px;
-        }
-    }
-}
-
 </style>
