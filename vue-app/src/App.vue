@@ -18,6 +18,10 @@
         />
 
         <Toast />
+
+        <footer>
+            Made with <i class="pi pi-heart" style="font-size: 10px" /> by Maya
+        </footer>
 </template>
 
 <script setup lang="ts">
