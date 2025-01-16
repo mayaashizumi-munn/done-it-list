@@ -1,5 +1,5 @@
 <template>
-    <Dialog v-model="visible" modal header="Create new Done It" id="done-it-modal">
+    <Dialog v-model="visible" modal header="Create new Done It" id="done-it-modal" @hide="emit('close')">
         <Form v-slot="$form" @submit="createDoneIt" :resolver="resolver" :validate-on-submit="true">
             <FloatLabel variant="on" class="float-label">
                 <InputText name="title" class="float-label__text-input" v-model="title" autocomplete="off" />
@@ -99,7 +99,8 @@ import CategoryPill from './CategoryPill.vue'
 import { addToDb } from '../idb'
 
 const visible = defineModel()
-const emit = defineEmits(['submitted', 'errorSubmitting'])
+
+const emit = defineEmits(['submitted', 'errorSubmitting', 'close'])
 
 interface Category {
     label: string
@@ -115,12 +116,12 @@ const categories: Category[] = [
     { label: 'On leave', type: 'on-leave' },
 ]
 
-const title = ref('')
-const description = ref('')
-const startTime = ref()
-const endTime = ref()
-const category = ref()
-const link = ref('')
+const title = defineModel('title')
+const description = defineModel('description')
+const startTime = defineModel('startTime')
+const endTime = defineModel('endTime')
+const category = defineModel('category')
+const link = defineModel('link')
 
 const resolver = (resolverOptions: FormResolverOptions) => {
     let errors = {

@@ -37,6 +37,7 @@
                     rounded 
                     raised 
                     aria-label="Delete"
+                    severity="danger"
                     @click="onDeleteClicked"
                 />
                 <Button 
@@ -45,6 +46,7 @@
                     rounded 
                     raised 
                     aria-label="Edit" 
+                    severity="info"
                     @click="onEditClicked"
                 />
             </div>
