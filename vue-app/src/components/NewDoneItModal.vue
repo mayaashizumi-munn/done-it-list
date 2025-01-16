@@ -1,8 +1,20 @@
 <template>
-    <Dialog v-model="visible" modal header="Create new Done It" id="done-it-modal" @hide="emit('close')">
+    <Dialog 
+        v-model="visible" 
+        modal 
+        header="Create new Done It" 
+        id="done-it-modal"
+        @show="revalidateForm"
+        @hide="emit('close')"
+    >
         <Form v-slot="$form" @submit="createDoneIt" :resolver="resolver" :validate-on-submit="true">
             <FloatLabel variant="on" class="float-label">
-                <InputText name="title" class="float-label__text-input" v-model="title" autocomplete="off" />
+                <InputText 
+                    name="title" 
+                    class="float-label__text-input" 
+                    v-model="title" 
+                    autocomplete="off" 
+                />
                 <label for="title">Title *</label>
             </FloatLabel>
             <Message v-if="$form.title?.invalid" severity="error" size="small" variant="simple">
@@ -10,7 +22,11 @@
             </Message>
 
             <FloatLabel variant="on" class="float-label">
-                <Textarea name="desc" class="float-label__text-input" v-model="description" />
+                <Textarea 
+                    name="desc" 
+                    class="float-label__text-input" 
+                    v-model="description" 
+                />
                 <label for="desc">Description</label>
             </FloatLabel>
 
@@ -83,7 +99,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { type ModelRef } from 'vue'
 import { 
     Dialog, 
     FloatLabel, 
@@ -120,8 +136,12 @@ const title = defineModel('title')
 const description = defineModel('description')
 const startTime = defineModel('startTime')
 const endTime = defineModel('endTime')
-const category = defineModel('category')
+const category: ModelRef<Category | undefined> = defineModel('category')
 const link = defineModel('link')
+
+const revalidateForm = () => {
+    
+}
 
 const resolver = (resolverOptions: FormResolverOptions) => {
     let errors = {
@@ -130,6 +150,8 @@ const resolver = (resolverOptions: FormResolverOptions) => {
         endTime: [],
         catSelect: []
     }
+
+    console.log(resolverOptions.values)
 
     if (!resolverOptions.values.title) {
         errors.title = [{ message: 'Title is required' }]
@@ -161,8 +183,8 @@ const createDoneIt = async (formState: FormSubmitEvent) => {
             'description': description.value,
             'startTime': startTime.value,
             'endTime': endTime.value,
-            'categoryType': category.value.type,
-            'categoryLabel': category.value.label,
+            'categoryType': category.value?.type,
+            'categoryLabel': category.value?.label,
             'link': link.value
         }).then(() => {
             emit('submitted')
