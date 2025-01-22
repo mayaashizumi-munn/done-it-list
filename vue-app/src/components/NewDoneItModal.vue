@@ -151,22 +151,20 @@ const resolver = (resolverOptions: FormResolverOptions) => {
         catSelect: []
     }
 
-    console.log(resolverOptions.values)
-
-    if (!resolverOptions.values.title) {
+    if (!title.value) {
         errors.title = [{ message: 'Title is required' }]
     }
 
-    if (!resolverOptions.values.startTime) {
+    if (!startTime.value) {
         errors.startTime = [{ message: 'Start time is required' }]
     }
 
-    if (!resolverOptions.values.catSelect) {
+    if (!category.value) {
         errors.catSelect = [{ message: 'Category is required' }]
     }
 
-    if (resolverOptions.values.endTime) {
-        if (resolverOptions.values.endTime < resolverOptions.values.startTime) {
+    if (endTime.value) {
+        if (endTime.value < startTime.value) {
             errors.endTime = [{ message: 'End time must be in the future from start time' }]
         }
     }
