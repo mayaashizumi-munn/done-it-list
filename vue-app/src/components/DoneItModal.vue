@@ -2,9 +2,8 @@
     <Dialog 
         v-model="visible" 
         modal 
-        header="Create new Done It" 
+        :header="mode === 'new' ? 'Create new Done It' : 'Edit Done It'" 
         id="done-it-modal"
-        @show="revalidateForm"
         @hide="emit('close')"
     >
         <Form v-slot="$form" @submit="createDoneIt" :resolver="resolver" :validate-on-submit="true">
@@ -91,8 +90,12 @@
                 <label for="link">Link</label>
             </FloatLabel>
 
-            <Button type="submit" severity="success" id="create-button">
-                Create
+            <Button 
+                type="submit" 
+                :severity="mode === 'new' ? 'success' : 'info'" 
+                id="create-button"
+            >
+                {{ mode === 'new' ? 'Create' : 'Edit' }}
             </Button>
         </Form>
     </Dialog>
@@ -112,11 +115,18 @@ import {
 } from "primevue"
 import { Form, type FormSubmitEvent, type FormResolverOptions } from '@primevue/forms'
 import CategoryPill from './CategoryPill.vue'
-import { addToDb } from '../idb'
+import { addToDb, editItemFromDb } from '../idb'
+import { DONE_IT_DB } from '../constants'
+
+interface Props {
+    mode: 'new' | 'edit'
+    editingId: number | undefined
+}
+const props = defineProps<Props>()
 
 const visible = defineModel()
 
-const emit = defineEmits(['submitted', 'errorSubmitting', 'close'])
+const emit = defineEmits(['submitted', 'errorSubmitting', 'close', 'edited', 'errorEditing'])
 
 interface Category {
     label: string
@@ -139,10 +149,6 @@ const endTime = defineModel('endTime')
 const category: ModelRef<Category | undefined> = defineModel('category')
 const link = defineModel('link')
 
-const revalidateForm = () => {
-    
-}
-
 const resolver = (resolverOptions: FormResolverOptions) => {
     let errors = {
         title: [],
@@ -163,7 +169,7 @@ const resolver = (resolverOptions: FormResolverOptions) => {
         errors.catSelect = [{ message: 'Category is required' }]
     }
 
-    if (endTime.value) {
+    if (endTime.value && startTime.value) {
         if (endTime.value < startTime.value) {
             errors.endTime = [{ message: 'End time must be in the future from start time' }]
         }
@@ -176,7 +182,7 @@ const resolver = (resolverOptions: FormResolverOptions) => {
 
 const createDoneIt = async (formState: FormSubmitEvent) => {
     if (formState.valid) {
-        await addToDb('doneit', {
+        const data = {
             'title': title.value,
             'description': description.value,
             'startTime': startTime.value,
@@ -184,13 +190,25 @@ const createDoneIt = async (formState: FormSubmitEvent) => {
             'categoryType': category.value?.type,
             'categoryLabel': category.value?.label,
             'link': link.value
-        }).then(() => {
-            emit('submitted')
-            resetForm()
-        }).catch((e) => {
-            console.log(e)
-            emit('errorSubmitting')
-        })
+        }
+
+        if (props.mode === 'new') {
+            await addToDb(DONE_IT_DB, data).then(() => {
+                emit('submitted')
+                resetForm()
+            }).catch((e) => {
+                console.log(e)
+                emit('errorSubmitting')
+            })
+        } else if (props.editingId) {
+            await editItemFromDb(DONE_IT_DB, data, props.editingId).then(() => {
+                emit('edited')
+                resetForm()
+            }).catch((e) => {
+                console.log(e)
+                emit('errorEditing')
+            })
+        }
     }
 }
 

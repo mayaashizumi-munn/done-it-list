@@ -27,6 +27,15 @@ export async function addToDb(storeName: string, data: any): Promise<IDBValidKey
     return db.add(storeName, data)
 }
 
+export async function editItemFromDb(storeName: string, data: any, id: number): Promise<IDBValidKey> {
+    const db = await setupDB()
+
+    return db.put(storeName, {
+        ...data,
+        id
+    })
+}
+
 export async function getAllFromDb(storeName: string): Promise<any[]> {
     const db = await setupDB()
     return db.getAll(storeName)

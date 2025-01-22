@@ -8,6 +8,7 @@
                 :key="doneIt.id"
                 :done-it="doneIt"
                 @delete="deleteDoneIt"
+                @edit="emit('editDoneIt', doneIt)"
             />
         </div>
     </div>
@@ -29,7 +30,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const emit = defineEmits(['refreshDoneIts'])
+const emit = defineEmits(['refreshDoneIts', 'editDoneIt'])
 
 const organisedByDate: ComputedRef<DoneItDate[]> = computed(() => {
     const dates = props.doneIts?.reduce((result: DoneItDate[], item) => {
@@ -58,6 +59,10 @@ const deleteDoneIt = (doneItId: number) => {
         toast.add({severity: "error", summary: "Failed", detail: 'Failed to deleted Done It', life: 3000})
     })
     
+}
+
+const editDoneIt = (doneIt: DoneIt) => {
+
 }
 </script>
 

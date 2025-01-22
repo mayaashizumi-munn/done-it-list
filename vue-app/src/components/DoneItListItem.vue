@@ -47,7 +47,7 @@
                     raised 
                     aria-label="Edit" 
                     severity="info"
-                    @click="onEditClicked"
+                    @click="emit('edit')"
                 />
             </div>
         </Transition>
@@ -70,7 +70,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const emit = defineEmits(['delete'])
+const emit = defineEmits(['delete', 'edit'])
 
 const getFormattedTime = (date: Date) => {
     return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
@@ -94,10 +94,6 @@ const onDeleteClicked = (event: Event) => {
             emit('delete', props.doneIt.id)
         },
     });
-}
-
-const onEditClicked = (event) => {
-    
 }
 </script>
 

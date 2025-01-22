@@ -6,7 +6,7 @@
             icon="pi pi-list-check"
             label="New Done It"
             raised
-            @click="openDoneItModal" 
+            @click="openDoneItModal('new')" 
         />
     </header>
 
@@ -24,9 +24,10 @@
         :loading="loadingDoneIts" 
         :done-its="doneIts" 
         @refresh-done-its="loadDoneItsFromDb"
+        @edit-done-it="editDoneIt"
     />
 
-    <NewDoneItModal
+    <DoneItModal
         v-model:visible="modalVisible"
         v-model:title="doneItModalTitle"
         v-model:description="doneItModalDesc"
@@ -34,8 +35,12 @@
         v-model:end-time="doneItModalEnd"
         v-model:category="doneItModalCategory"
         v-model:link="doneItModalLink"
+        :mode="doneItModalMode"
+        :editing-id="doneItEditingId"
         @submitted="onDoneItSubmit"
+        @edited="onDoneItEdited"
         @error-submitting="onDoneItSubmitFailed"
+        @error-editing="onDoneItEditFailed"
         @close="resetModalValues"
     />
 
@@ -50,7 +55,7 @@
 <script setup lang="ts">
 import { ref, type Ref, onBeforeMount } from "vue"
 import Button from "primevue/button"
-import NewDoneItModal from "./components/NewDoneItModal.vue";
+import DoneItModal from "./components/DoneItModal.vue";
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import DoneItList from "./components/DoneItList.vue";
@@ -68,6 +73,8 @@ const loadingTodos = ref(true)
 const doneIts: Ref<DoneIt[]> = ref([])
 const todos: Ref<ToDo[]> = ref([])
 
+const doneItModalMode: Ref<'new'|'edit'> = ref('new')
+const doneItEditingId: Ref<number|undefined> = ref(undefined)
 const doneItModalTitle = defineModel('title')
 const doneItModalDesc = defineModel('desc')
 const doneItModalStart = defineModel('start')
@@ -92,7 +99,8 @@ const loadTodosFromDb = async () => {
     loadingTodos.value = false
 }
 
-const openDoneItModal = () => {
+const openDoneItModal = (modalMode: 'new'|'edit') => {
+    doneItModalMode.value = modalMode
     modalVisible.value = true
 }
 const onDoneItSubmit = async () => {
@@ -101,8 +109,29 @@ const onDoneItSubmit = async () => {
     toast.add({severity: "success", summary: "Done It Added", detail: 'New done it created', life: 3000})
 }
 
+const onDoneItEdited = async () => {
+    await loadDoneItsFromDb()
+    modalVisible.value = false
+    toast.add({severity: "success", summary: "Done It Edited", detail: 'Done it successfully edited', life: 3000})
+}
+
+const onDoneItEditFailed = () => {
+    toast.add({severity: "error", summary: "Error Editing Done It", detail: 'Please try again', life: 3000})
+}
+
 const onDoneItSubmitFailed = () => {
     toast.add({severity: "error", summary: "Error Creating Done It", detail: 'Please try again', life: 3000})
+}
+
+const editDoneIt = (doneIt: DoneIt) => {
+    doneItModalTitle.value = doneIt.title
+    doneItModalStart.value = doneIt.startTime
+    doneItModalCategory.value = {label: doneIt.categoryLabel, type: doneIt.categoryType}
+    doneItModalDesc.value = doneIt.description ?? ''
+    doneItModalEnd.value = doneIt.endTime ?? undefined
+    doneItModalLink.value = doneIt.link ?? ''
+    doneItEditingId.value = doneIt.id
+    openDoneItModal('edit')
 }
 
 const deleteTodo = (todoId: number, showToast = true) => {
@@ -128,7 +157,7 @@ const resetModalValues = () => {
 const convertTodoToDoneIt = (todo: ToDo) => {
     doneItModalTitle.value = todo.title
     deleteTodo(todo.id, false)
-    openDoneItModal()
+    openDoneItModal('new')
 }
 </script>
 
