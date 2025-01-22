@@ -113,7 +113,7 @@ import {
     Message, 
     Textarea
 } from "primevue"
-import { Form, type FormSubmitEvent, type FormResolverOptions } from '@primevue/forms'
+import { Form, type FormSubmitEvent } from '@primevue/forms'
 import CategoryPill from './CategoryPill.vue'
 import { addToDb, editItemFromDb } from '../idb'
 import { DONE_IT_DB } from '../constants'
@@ -149,7 +149,7 @@ const endTime = defineModel('endTime')
 const category: ModelRef<Category | undefined> = defineModel('category')
 const link = defineModel('link')
 
-const resolver = (resolverOptions: FormResolverOptions) => {
+const resolver = () => {
     let errors = {
         title: [],
         startTime: [],

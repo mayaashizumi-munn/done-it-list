@@ -60,10 +60,6 @@ const deleteDoneIt = (doneItId: number) => {
     })
     
 }
-
-const editDoneIt = (doneIt: DoneIt) => {
-
-}
 </script>
 
 <style lang="less" scoped>

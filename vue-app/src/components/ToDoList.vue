@@ -73,7 +73,7 @@ const emit = defineEmits(['refreshTodos', 'deleteTodo', 'markCompleted'])
 const todoInput = ref()
 
 const createNewTodo = () => {
-    if (todoInput.value?.length > 0) {
+    if (!props.loading && todoInput.value?.length > 0) {
         addToDb(TODO_DB, { title: todoInput.value }).then(() => {
             todoInput.value = ''
         })

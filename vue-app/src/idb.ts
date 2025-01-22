@@ -22,12 +22,12 @@ async function setupDB(): Promise<IDBPDatabase<unknown>> {
     })
 }
 
-export async function addToDb(storeName: string, data: any): Promise<IDBValidKey> {
+export async function addToDb(storeName: string, data: object): Promise<IDBValidKey> {
     const db = await setupDB()
     return db.add(storeName, data)
 }
 
-export async function editItemFromDb(storeName: string, data: any, id: number): Promise<IDBValidKey> {
+export async function editItemFromDb(storeName: string, data: object, id: number): Promise<IDBValidKey> {
     const db = await setupDB()
 
     return db.put(storeName, {
@@ -36,7 +36,7 @@ export async function editItemFromDb(storeName: string, data: any, id: number): 
     })
 }
 
-export async function getAllFromDb(storeName: string): Promise<any[]> {
+export async function getAllFromDb(storeName: string): Promise<object[]> {
     const db = await setupDB()
     return db.getAll(storeName)
 }
