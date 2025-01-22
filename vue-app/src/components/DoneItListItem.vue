@@ -1,6 +1,6 @@
 <template>
-    <div 
-        class="done-it-item" 
+    <div
+        class="done-it-item"
         @mouseenter="showActions = true"
         @mouseleave="showActions = false"
     >
@@ -10,16 +10,22 @@
                 - {{ getFormattedTime(doneIt.endTime) }}
             </span>
         </span>
-        
+
         <span class="done-it-item-section__category">
-            <CategoryPill :type="doneIt.categoryType" :label="doneIt.categoryLabel" />
+            <CategoryPill
+                :type="doneIt.categoryType"
+                :label="doneIt.categoryLabel"
+            />
         </span>
 
         <div class="done-it-item-section__summary">
             <p class="done-it-item-section__summary__title">
                 {{ doneIt.title }}
             </p>
-            <p v-if="doneIt.description" class="done-it-item-section__summary__desc">
+            <p
+                v-if="doneIt.description"
+                class="done-it-item-section__summary__desc"
+            >
                 {{ doneIt.description }}
             </p>
             <p v-if="doneIt.link" class="done-it-item-section__summary__link">
@@ -31,21 +37,21 @@
 
         <Transition>
             <div v-if="showActions" class="done-it-item-section__actions">
-                <Button 
-                    icon="pi pi-trash" 
-                    variant="text" 
-                    rounded 
-                    raised 
+                <Button
+                    icon="pi pi-trash"
+                    variant="text"
+                    rounded
+                    raised
                     aria-label="Delete"
                     severity="danger"
                     @click="onDeleteClicked"
                 />
-                <Button 
-                    icon="pi pi-pen-to-square" 
-                    variant="text" 
-                    rounded 
-                    raised 
-                    aria-label="Edit" 
+                <Button
+                    icon="pi pi-pen-to-square"
+                    variant="text"
+                    rounded
+                    raised
+                    aria-label="Edit"
                     severity="info"
                     @click="emit('edit')"
                 />
@@ -55,13 +61,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import type { DoneIt } from '../types'
-import { Button } from 'primevue'
-import CategoryPill from './CategoryPill.vue'
-import { useConfirm } from "primevue/useconfirm";
+import { ref } from "vue"
+import type { DoneIt } from "../types"
+import { Button } from "primevue"
+import CategoryPill from "./CategoryPill.vue"
+import { useConfirm } from "primevue/useconfirm"
 
-const confirm = useConfirm();
+const confirm = useConfirm()
 
 const showActions = ref(false)
 
@@ -70,30 +76,34 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const emit = defineEmits(['delete', 'edit'])
+const emit = defineEmits(["delete", "edit"])
 
 const getFormattedTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+    return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+    })
 }
 
 const onDeleteClicked = (event: Event) => {
     confirm.require({
         target: event.currentTarget,
-        message: 'Are you sure you want to delete this item?',
-        icon: 'pi pi-exclamation-triangle',
+        message: "Are you sure you want to delete this item?",
+        icon: "pi pi-exclamation-triangle",
         rejectProps: {
-            label: 'Cancel',
-            severity: 'secondary',
-            outlined: true
+            label: "Cancel",
+            severity: "secondary",
+            outlined: true,
         },
         acceptProps: {
-            label: 'Delete',
-            severity: 'danger',
+            label: "Delete",
+            severity: "danger",
         },
         accept: () => {
-            emit('delete', props.doneIt.id)
+            emit("delete", props.doneIt.id)
         },
-    });
+    })
 }
 </script>
 
@@ -132,7 +142,8 @@ const onDeleteClicked = (event: Event) => {
             font-size: 20px;
         }
 
-        &__desc, &__link {
+        &__desc,
+        &__link {
             font-size: 12px;
         }
     }

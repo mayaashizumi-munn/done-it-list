@@ -5,13 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-
 interface Props {
     label: string
     type: string
 }
 const props = defineProps<Props>()
-
 </script>
 
 <style lang="less" scoped>

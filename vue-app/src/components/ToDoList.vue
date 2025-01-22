@@ -3,45 +3,41 @@
         <h4>Todo List</h4>
 
         <div class="create-todo">
-            <InputText 
-                v-model="todoInput" 
+            <InputText
+                v-model="todoInput"
                 class="create-todo--input"
-                placeholder="Add a task..." 
+                placeholder="Add a task..."
             />
-            <Button 
+            <Button
                 class="create-todo--submit-button"
-                label="New Todo" 
-                variant="text" 
-                icon="pi pi-plus" 
+                label="New Todo"
+                variant="text"
+                icon="pi pi-plus"
                 aria-label="Create to do item"
                 @click="createNewTodo"
             />
         </div>
 
         <ul class="todo-list">
-            <li 
-                v-for="todo in todos" 
-                :key="todo.id" 
-                class="todo-list--item"
-            >
+            <li v-for="todo in todos" :key="todo.id" class="todo-list--item">
                 <p>{{ todo.title }}</p>
 
                 <div class="todo-list--item--actions">
-                    <Button 
-                        icon="pi pi-trash" 
-                        variant="text" 
-                        rounded 
-                        raised 
+                    <Button
+                        icon="pi pi-trash"
+                        variant="text"
+                        rounded
+                        raised
                         aria-label="Delete todo"
                         severity="danger"
                         @click="(event) => onDeleteClicked(event, todo.id)"
                     />
-                    <Button 
-                        icon="pi pi-check" 
-                        variant="text" 
-                        rounded 
-                        raised 
-                        aria-label="Mark as complete" 
+                    <Button
+                        icon="pi pi-check"
+                        variant="text"
+                        rounded
+                        raised
+                        aria-label="Mark as complete"
                         severity="success"
                         @click="onMarkComplete(todo)"
                     />
@@ -52,15 +48,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
-import { addToDb } from '../idb'
-import { TODO_DB } from '../constants'
-import type { ToDo } from '../types'
-import { useConfirm } from "primevue/useconfirm";
+import { ref } from "vue"
+import Button from "primevue/button"
+import InputText from "primevue/inputtext"
+import { addToDb } from "../idb"
+import { TODO_DB } from "../constants"
+import type { ToDo } from "../types"
+import { useConfirm } from "primevue/useconfirm"
 
-const confirm = useConfirm();
+const confirm = useConfirm()
 
 interface Props {
     loading: boolean
@@ -68,41 +64,41 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const emit = defineEmits(['refreshTodos', 'deleteTodo', 'markCompleted'])
+const emit = defineEmits(["refreshTodos", "deleteTodo", "markCompleted"])
 
 const todoInput = ref()
 
 const createNewTodo = () => {
     if (!props.loading && todoInput.value?.length > 0) {
         addToDb(TODO_DB, { title: todoInput.value }).then(() => {
-            todoInput.value = ''
+            todoInput.value = ""
         })
-        emit('refreshTodos')
+        emit("refreshTodos")
     }
 }
 
 const onDeleteClicked = (event: Event, todoId: number) => {
     confirm.require({
         target: event.currentTarget,
-        message: 'Are you sure you want to delete this todo?',
-        icon: 'pi pi-exclamation-triangle',
+        message: "Are you sure you want to delete this todo?",
+        icon: "pi pi-exclamation-triangle",
         rejectProps: {
-            label: 'Cancel',
-            severity: 'secondary',
-            outlined: true
+            label: "Cancel",
+            severity: "secondary",
+            outlined: true,
         },
         acceptProps: {
-            label: 'Delete',
-            severity: 'danger',
+            label: "Delete",
+            severity: "danger",
         },
         accept: () => {
-            emit('deleteTodo', todoId)
+            emit("deleteTodo", todoId)
         },
-    });
+    })
 }
 
 const onMarkComplete = (todo: ToDo) => {
-    emit('markCompleted', todo)
+    emit("markCompleted", todo)
 }
 </script>
 
