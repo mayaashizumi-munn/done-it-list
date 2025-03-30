@@ -5,6 +5,7 @@
             id="add-done-it-button"
             icon="pi pi-list-check"
             label="New Done It"
+            severity="success"
             raised
             @click="openDoneItModal('new')"
         />
@@ -197,9 +198,18 @@ const convertTodoToDoneIt = (todo: ToDo) => {
 </script>
 
 <style lang="less" scoped>
+#add-done-it-button {
+    padding: 12px 16px;
+    font-size: 1.2rem;
+}
+
 .done-it-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+hr {
+    margin: 48px 0;
 }
 </style>
