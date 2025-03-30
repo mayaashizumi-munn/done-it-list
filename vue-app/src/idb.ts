@@ -2,7 +2,7 @@ import { openDB, type IDBPDatabase } from "idb"
 import { DONE_IT_DB, TODO_DB } from "./constants"
 
 const dbName = "doneitdb"
-const dbVer = 3
+const dbVer = 6
 
 const storeNames = [TODO_DB, DONE_IT_DB]
 
